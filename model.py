@@ -91,11 +91,18 @@ class GaussianPolicy(nn.Module):
         log_std = torch.clamp(log_std, min=LOG_SIG_MIN, max=LOG_SIG_MAX)
         return mean, log_std
 
-    def sample(self, state):
+    def sample(self, state, generator=None):
         mean, log_std = self.forward(state)
         std = log_std.exp()
         normal = Normal(mean, std)
-        x_t = normal.rsample()  # for reparameterization trick (mean + std * N(0,1))
+        # 재현성을 위해 generator 사용
+        if generator is not None:
+            # Generator를 사용하여 재현 가능한 샘플링
+            # torch.randn()은 generator를 받지만, randn_like는 받지 않음
+            eps = torch.randn(mean.shape, device=mean.device, dtype=mean.dtype, generator=generator)
+        else:
+            eps = torch.randn_like(mean)
+        x_t = mean + std * eps  # reparameterization trick
         y_t = torch.tanh(x_t)
         action = y_t * self.action_scale + self.action_bias
         log_prob = normal.log_prob(x_t)

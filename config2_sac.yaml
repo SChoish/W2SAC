@@ -1,0 +1,43 @@
+# SAC 실험 설정 파일
+# run_sac.py --config config_sac.yaml로 실행
+
+common:
+  # 공통 설정
+  seeds: [123456]  # 실행할 시드 목록
+  enabled_environments:  # 실행할 환경 목록
+    - AdroitHandDoor-v1
+    - AdroitHandHammer-v1
+    - AdroitHandPen-v1
+    - FrankaKitchen-v1
+  
+  # 학습 파라미터
+  max_timesteps: 1000000  # 최대 타임스텝
+  eval_freq: 10  # 평가 주기 (episodes)
+  num_actors: 2  # Actor 개수
+  
+  # 네트워크 파라미터
+  lr: 0.0003  # Learning rate
+  batch-size: 256  # Batch size
+  gamma: 0.99  # Discount factor
+  tau: 0.005  # Target smoothing coefficient
+  alpha: 0.2  # Temperature parameter
+  automatic-entropy-tuning: false  # 자동 entropy 조정
+  
+  # 시스템
+  cuda: true  # CUDA 사용 여부
+
+environments:
+  # 환경별 개별 설정 (없으면 common 사용)
+  
+  AdroitHandDoor-v1:
+    w2_weights: [0.0, 0.4]  # 첫 번째 actor: 0.0, 두 번째 actor: 0.4
+  
+  AdroitHandHammer-v1:
+    w2_weights: [0.0, 0.4]  # 첫 번째 actor: 0.0, 두 번째 actor: 0.4
+  
+  AdroitHandPen-v1:
+    w2_weights: [0.0, 0.4]  # 첫 번째 actor: 0.0, 두 번째 actor: 0.4
+  
+  FrankaKitchen-v1:
+    w2_weights: [0.0, 0.4]  # 첫 번째 actor: 0.0, 두 번째 actor: 0.4
+    tasks_to_complete: ['microwave', 'kettle']  # Kitchen goal 설정

@@ -80,6 +80,22 @@ checkpoints/
 *.ckpt
 *.pth.tar
 
+# Experiment results
+results/
+*.npy
+# CSV and JSON in results directory only
+results/**/*.csv
+results/**/*.json
+# But keep config files
+!*.yaml
+!*.yml
+!config*.yaml
+!config*.yml
+
+# Log files
+logs*.txt
+*.log
+
 # IDE
 .vscode/
 .idea/
@@ -101,4 +117,3 @@ Thumbs.db
 
 # Temporary files
 *.tmp
-*.log
